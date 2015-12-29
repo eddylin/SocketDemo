@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="scene" style="background-color:azure;height:100px;position:relative;">
+
+
+        <div id="dot" style="background-color:red; display:inline-block; width:10px; height:10px;position:absolute;">
+
+        </div>
+    </div>
+
+
+    <input type="text" id="msg" class="text-primary" />
+
+
+    <input type="button" id="btn_send" class="btn-default" value="Send Message" />
+
+
+
+
+
+    <div id="msgs">
+
+    </div>
+
+    <script src="scripts/jquery-2.1.4.js"></script>
+    <script src="bootstrap-3.3.4-dist/js/bootstrap.js"></script>
+
+    <script>
+        $(function () {
+            var wsServer = 'ws://localhost:1154/WebSocketServer.ashx';
+            var websocket = new WebSocket(wsServer);
+            websocket.onopen = function (evt) { onOpen(evt) };
+            websocket.onclose = function (evt) { onClose(evt) };
+            websocket.onmessage = function (evt) { onMessage(evt) };
+            websocket.onerror = function (evt) { onError(evt) };
+            function onOpen(evt) {
+                console.log("Connected to WebSocket server.");
+            }
+            function onClose(evt) {
+                console.log("Disconnected");
+            }
+            function onMessage(evt) {
+                var msg = evt.data.toString();
+                if (msg.indexOf("move") >= 0)
+                {
+                    var pos = msg.split("|")[1];
+                    var x = pos.split(",")[0];
+                    var y = pos.split(",")[1];
+
+                    $("#dot").css({ left: Number.parseInt(x), top: Number.parseInt(y) })
+
+                    console.log(x, y);
+                }
+               // $("#msgs").append("<div>" + evt.data.toString() + "</div>");
+                console.log('Retrieved data from server: ' + evt.data);
+            }
+            function onError(evt) {
+                console.log('Error occured: ' + evt.data);
+            }
+
+
+
+            $("#btn_send").click(function () {
+                var val = $("#msg").val();
+                websocket.send(val);
+            });
+
+            $("#scene").mousemove(function (event) {
+                websocket.send("move|" + event.clientX + "," + event.clientY)
+
+                //$("#dot").css({ left: event.clientX, top: event.clientY });
+            });
+
+
+
+        });
+    </script>
+</body>
+</html>
