@@ -11,10 +11,10 @@ namespace SocketDemoWeb
 
         public void ProcessRequest(HttpContext context)
         {
-            if(context.IsWebSocketRequest)
-            {
+            //if(context.IsWebSocketRequest)
+            //{
                 context.AcceptWebSocketRequest(new MicrosoftWebSockets());
-            }
+            //}
         }
 
         public bool IsReusable

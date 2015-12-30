@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello Cocos2d-JS</title> 
+    <script type="text/javascript" src="cocos2d-js-v3.9.js" charset="UTF-8"></script>
+    <script src="scripts/jquery-2.1.4.js"></script>
+</head>
+<body style="position:relative;">
+    <div id="msg" style="display:inline-block; width:200px; height:400px; 
+                background-color:azure; position:absolute; left:10px; 
+                top:10px; overflow:auto;z-index:1000;">
+
+    </div>
+
+
+    <canvas id="gameCanvas" width="800" height="450"></canvas>
+    <script type="text/javascript">
+        $(function () {
+
+            var wsServer = 'ws://localhost:1154/WebSocketServer.ashx';
+            var websocket = new WebSocket(wsServer);
+            websocket.onopen = function (evt) { onOpen(evt) };
+            websocket.onclose = function (evt) { onClose(evt) };
+            websocket.onmessage = function (evt) { onMessage(evt) };
+            websocket.onerror = function (evt) { onError(evt) };
+
+            var onMessageCallbacks = [];
+
+            function onOpen(evt) {
+                console.log("Connected to WebSocket server.");
+            }
+            function onClose(evt) {
+                console.log("Disconnected");
+            }
+            function onMessage(evt) {
+
+                for (var i = 0; i < onMessageCallbacks.length; ++i)
+                {
+                    onMessageCallbacks[i](evt);
+                }
+
+                $("#msg").append("<div>" + evt.data.toString() + "</div>");
+                console.log('Retrieved data from server: ' + evt.data);
+            }
+            function onError(evt) {
+                console.log('Error occured: ' + evt.data);
+            }
+
+
+            cc.game.onStart = function () {
+                //load resources
+                cc.LoaderScene.preload(["scene.png","button.jpg","input_bg.jpg"], function () {
+
+                    var MyScene = cc.Scene.extend({
+                        onEnter: function () {
+                            this._super();
+                            var size = cc.director.getWinSize();
+
+                            // background
+                            var sprite = cc.Sprite.create("scene.png");
+                            sprite.setPosition(size.width / 2, size.height / 2);
+                            sprite.setScale(0.8);
+                            this.addChild(sprite, 0);
+
+                            
+                            var editbox = cc.EditBox.create(cc.size(400, 50), cc.Scale9Sprite.create("input_bg.jpg"), cc.Scale9Sprite.create("input_bg.jpg"), cc.Scale9Sprite.create("input_bg.jpg"));
+                            editbox.setPosition(250, 30);
+                            editbox.setFontSize(30);
+                            editbox.setFontColor(cc.color(0,0,0,0))
+                            this.addChild(editbox);
+
+                            var btn2 = ccui.Button.create("button.jpg", "button.jpg", "button.jpg", null);
+                            btn2.setTitleText("Send");
+                            btn2.setZoomScale(0.8);
+                            btn2.setTitleFontSize(40);
+                            btn2.setScale(0.3);
+                            btn2.setPosition(500, 30);
+                            btn2.addClickEventListener(function () {
+                                var msg = editbox.getText();
+                                websocket.send(msg);
+                                console.log("click!!!!!!!1");
+                            });
+                            this.addChild(btn2);
+
+
+                            onMessageCallbacks.push(function (evt) {
+                                var msg = evt.data.toString();
+                                if (msg.indexOf("move") >= 0) {
+                                    var pos = msg.split("|")[1];
+                                    var x = pos.split(",")[0];
+                                    var y = pos.split(",")[1];
+
+                                    $("#dot").css({ left: Number.parseInt(x), top: Number.parseInt(y) })
+
+                                    console.log(x, y);
+                                }
+                                // $("#msgs").append("<div>" + evt.data.toString() + "</div>");
+                            });
+
+
+
+                        }
+                    });
+                    cc.director.runScene(new MyScene());
+                }, this);
+            };
+            cc.game.run("gameCanvas");
+        });
+    </script>
+</body>
+</html>

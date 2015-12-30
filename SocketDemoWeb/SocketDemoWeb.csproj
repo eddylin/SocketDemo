@@ -98,11 +98,19 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="button.jpg" />
+    <Content Include="input_bg.jpg" />
+    <Content Include="scene.png" />
+    <Content Include="build.xml" />
+    <Content Include="cocos2d-js-v3.9.js" />
+    <Content Include="HelloWorld.html" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="scripts\jquery-2.1.4.min.map" />
+    <Content Include="project.json" />
+    <Content Include="README.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
