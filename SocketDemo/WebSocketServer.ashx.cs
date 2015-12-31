@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using Microsoft.Web.WebSockets;
 
-namespace SocketDemoWeb
+namespace SocketDemo
 {
     public class WebSocketServer : IHttpHandler
     {

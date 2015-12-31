@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过下列特性集
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("SocketDemoWeb")]
+[assembly: AssemblyTitle("SocketDemo")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sky123.Org")]
-[assembly: AssemblyProduct("SocketDemoWeb")]
-[assembly: AssemblyCopyright("Copyright © Sky123.Org 2015")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("SocketDemo")]
+[assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于 typelib 的 ID
-[assembly: Guid("e6deccfc-959f-4f5b-9e74-250efb17b592")]
+[assembly: Guid("926c1d8e-6dce-4f2c-a301-ae5ad393274c")]
 
 // 程序集的版本信息由下列四个值组成:
 //
